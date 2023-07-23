@@ -4,6 +4,10 @@ set(SRC
     UnDI/Base/Platform.h
     UnDI/Base/PlatformTraits.h
 
+    UnDI/RTTI/RTTI.h
+
+    UnDI/Utils/UUID.h
+
     UnDI/Container.h
     UnDI/Container.cpp
 )

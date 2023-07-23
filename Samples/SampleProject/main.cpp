@@ -9,39 +9,31 @@ using UN::DI::Ptr;
 class ILogger : public IService
 {
 public:
-    virtual void Log(const std::string_view& message) = 0;
+    UN_CLASS_RTTI(ILogger, "A521C28C-A4CD-491F-B89E-B666B57429BF");
 
-    inline static int GetTypeId()
-    {
-        return 0;
-    }
+    virtual void Log(const std::string_view& message) = 0;
 };
 
 class IDatabase : public IService
 {
 public:
-    virtual int LoadData() = 0;
+    UN_CLASS_RTTI(IDatabase, "CB0AA388-4D72-42AF-A735-6A41D8E2D143");
 
-    inline static int GetTypeId()
-    {
-        return 1;
-    }
+    virtual int LoadData() = 0;
 };
 
 class ITestService : public IService
 {
 public:
-    virtual void Run() = 0;
+    UN_CLASS_RTTI(ITestService, "5F9A04CD-AD84-4139-A7CE-BD5B22235BAF");
 
-    inline static int GetTypeId()
-    {
-        return 2;
-    }
+    virtual void Run() = 0;
 };
 
 class MyLogger : public ILogger
 {
 public:
+    UN_CLASS_RTTI(MyLogger, "71963929-6C8A-42F5-B6E9-70F23510C71A");
     UN_Injectable(inline MyLogger) {}
 
     inline void Log(const std::string_view& message) override
@@ -55,7 +47,8 @@ class MyDatabase : public IDatabase
     Ptr<ILogger> m_Logger;
 
 public:
-    UN_Injectable(inline explicit MyDatabase, const Ptr<MyLogger>& logger)
+    UN_CLASS_RTTI(MyDatabase, "F1976DA2-FB38-4BF8-8F3E-9836A7713F06");
+    UN_Injectable(inline explicit MyDatabase, const Ptr<ILogger>& logger)
         : m_Logger(logger)
     {
     }
@@ -73,6 +66,7 @@ class TestService : public ITestService
     Ptr<IDatabase> m_Database;
 
 public:
+    UN_CLASS_RTTI(TestService, "64C8155D-67ED-4BF1-A475-5C095C7DCDD7");
     UN_Injectable(inline TestService, const Ptr<ILogger>& logger, const Ptr<IDatabase>& db)
         : m_Logger(logger)
         , m_Database(db)
