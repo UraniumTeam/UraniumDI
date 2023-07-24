@@ -7,6 +7,8 @@ set(SRC
     UnDI/RTTI/RTTI.h
 
     UnDI/Utils/UUID.h
+    UnDI/Utils/Result.h
+    UnDI/Utils/ErrorCode.h
 
     UnDI/Container.h
     UnDI/Container.cpp
