@@ -4,6 +4,13 @@ set(SRC
     UnDI/Base/Platform.h
     UnDI/Base/PlatformTraits.h
 
+    UnDI/Memory/IAllocator.h
+    UnDI/Memory/Memory.h
+    UnDI/Memory/Object.h
+    UnDI/Memory/Ptr.h
+    UnDI/Memory/ReferenceCounter.h
+    UnDI/Memory/SystemAllocator.h
+
     UnDI/RTTI/RTTI.h
 
     UnDI/Utils/UUID.h
