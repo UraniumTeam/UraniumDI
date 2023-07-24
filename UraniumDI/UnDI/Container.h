@@ -15,7 +15,7 @@ namespace UN::DI
     class IService
     {
     public:
-        UN_CLASS_RTTI(IService, "53A3EFC1-552E-47F4-9E0C-3DB11932316D");
+        UN_RTTI_Class(IService, "53A3EFC1-552E-47F4-9E0C-3DB11932316D");
     };
 
     template<class T>

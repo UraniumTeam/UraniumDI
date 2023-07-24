@@ -11,11 +11,11 @@ namespace UN
 
     //! \brief Define common RTTI functions for a struct.
     //!
-    //! Same as UN_CLASS_RTTI, but for `final` classes that don't inherit from other classes.\n
-    //! Use this whenever possible, because UN_CLASS_RTTI implements virtual functions.
+    //! Same as UN_RTTI_Class, but for `final` classes that don't inherit from other classes.\n
+    //! Use this whenever possible, because UN_RTTI_Class implements virtual functions.
     //!
-    //! \see UN_CLASS_RTTI
-#define UN_STRUCT_RTTI(name, uuid)                                                                                               \
+    //! \see UN_RTTI_Class
+#define UN_RTTI_Struct(name, uuid)                                                                                               \
     inline void UnRTTI_Checks()                                                                                                  \
     {                                                                                                                            \
         using ThisType = std::remove_reference_t<decltype(*this)>;                                                               \
@@ -43,14 +43,14 @@ namespace UN
     //!     class Foo
     //!     {
     //!     public:
-    //!         UN_CLASS_RTTI(Foo, "12CED1D1-6337-443F-A854-B4624A6133AE");
+    //!         UN_RTTI_Class(Foo, "12CED1D1-6337-443F-A854-B4624A6133AE");
     //!         // members ...
     //!     };
     //! \endcode
     //!
-    //! \note Use UN_STRUCT_RTTI for `final` structs that don't inherit from any other class.
-#define UN_CLASS_RTTI(name, uuid)                                                                                                \
-    UN_STRUCT_RTTI(name, uuid);                                                                                                  \
+    //! \note Use UN_RTTI_Struct for `final` structs that don't inherit from any other class.
+#define UN_RTTI_Class(name, uuid)                                                                                                \
+    UN_RTTI_Struct(name, uuid);                                                                                                  \
     UN_PUSH_CLANG_WARNING("-Winconsistent-missing-override")                                                                     \
     inline virtual std::string_view UnRTTI_GetName() const                                                                       \
     {                                                                                                                            \
@@ -84,7 +84,7 @@ namespace UN
     //! \brief Cast a pointer to a base class to a derived class pointer if possible.
     //!
     //! Works just like normal `dynamic_cast<T*>`, except it uses only the classes that provide RTTI
-    //! through UN_CLASS_RTTI.
+    //! through UN_RTTI_Class.
     //!
     //! \tparam TDstPtr - Type of return value, e.g. `DerivedClass*`, _must_ be a pointer.
     //! \tparam TSrc    - Type of source value, e.g. `BaseClass`, _must not_ be a pointer.
@@ -107,7 +107,7 @@ namespace UN
     //! a `nullptr`. Use this when you're certainly sure that you can use `static_cast` here, but want to check it
     //! in debug builds. In release builds, when assertions are disabled, this can lead to undefined behaviour.
     //!
-    //! \note The function only works with the classes that provide RTTI through UN_CLASS_RTTI.
+    //! \note The function only works with the classes that provide RTTI through UN_RTTI_Class.
     //!
     //! \tparam TDstPtr - Type of return value, e.g. `DerivedClass*`, _must_ be a pointer.
     //! \tparam TSrc    - Type of source value, e.g. `BaseClass`, _must not_ be a pointer.
@@ -124,20 +124,20 @@ namespace UN
 
     //! \brief Get name of a type.
     //!
-    //! This function returns a short name provided in UN_CLASS_RTTI or UN_STRUCT_RTTI.\n
+    //! This function returns a short name provided in UN_RTTI_Class or UN_RTTI_Struct.\n
     //! Example:
     //! \code{.cpp}
     //!     template<class T>
     //!     class Foo
     //!     {
-    //!         UN_CLASS_RTTI(Foo, "4BDF1868-0E22-48CF-9DBA-8DD10F2A9D0C");
+    //!         UN_RTTI_Class(Foo, "4BDF1868-0E22-48CF-9DBA-8DD10F2A9D0C");
     //!         // members...
     //!     };
     //!
     //!     auto fooName = un_nameof<Foo<int>>(); // "Foo" - not "Foo<int>"!
     //! \endcode
     //!
-    //! \note The provided type must implement RTTI through UN_CLASS_RTTI or UN_STRUCT_RTTI.
+    //! \note The provided type must implement RTTI through UN_RTTI_Class or UN_RTTI_Struct.
     //!
     //! \tparam T - Type to get the name of.
     //!
@@ -151,18 +151,18 @@ namespace UN
     //! \brief Get name of a type.
     //!
     //! This functions is same as un_nameof(), but can return name of derived class if called from a base class.\n
-    //! Returns a short name provided in UN_CLASS_RTTI or UN_STRUCT_RTTI.\n
+    //! Returns a short name provided in UN_RTTI_Class or UN_RTTI_Struct.\n
     //! Example:
     //! \code{.cpp}
     //!     class Base
     //!     {
     //!     public:
-    //!         UN_CLASS_RTTI(Base, "AB26B8C7-827F-4212-88B4-F71A5EFD6EEB");
+    //!         UN_RTTI_Class(Base, "AB26B8C7-827F-4212-88B4-F71A5EFD6EEB");
     //!     };
     //!     class Derived : public Base
     //!     {
     //!     public:
-    //!         UN_CLASS_RTTI(Derived, "68CCD7DF-507F-4F3B-9EC3-001EEB33EB55");
+    //!         UN_RTTI_Class(Derived, "68CCD7DF-507F-4F3B-9EC3-001EEB33EB55");
     //!     };
     //!
     //!     auto derivedName = un_nameof(*static_cast<Base*>(new Derived)); // "Derived"
@@ -170,7 +170,7 @@ namespace UN
     //!
     //! For additional information see overload of un_nameof() without parameters.
     //!
-    //! \note The provided type must implement RTTI through UN_CLASS_RTTI or UN_STRUCT_RTTI.
+    //! \note The provided type must implement RTTI through UN_RTTI_Class or UN_RTTI_Struct.
     //!
     //! \tparam T - Type to get name of.
     //!
