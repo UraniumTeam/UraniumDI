@@ -20,11 +20,7 @@ namespace UN::DI
 
     VoidResult<ErrorCode> LifetimeScope::End()
     {
-        if (!m_IsAlive)
-        {
-            return Err(ErrorCode::InvalidOperation);
-        }
-
+        UN_Guard(m_IsAlive, ErrorCode::InvalidOperation);
         return EndImpl();
     }
 

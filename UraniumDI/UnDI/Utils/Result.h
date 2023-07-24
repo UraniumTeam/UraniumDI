@@ -224,4 +224,14 @@ namespace UN
 
     template<class TError>
     using VoidResult = Result<EmptyStruct, TError>;
+
+#define UN_Guard(Value, Error)                                                                                                   \
+    do                                                                                                                           \
+    {                                                                                                                            \
+        if (!(Value))                                                                                                            \
+        {                                                                                                                        \
+            return ::UN::Err(Error);                                                                                             \
+        }                                                                                                                        \
+    }                                                                                                                            \
+    while (false)
 } // namespace UN
