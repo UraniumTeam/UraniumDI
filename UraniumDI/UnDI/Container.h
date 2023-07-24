@@ -1,7 +1,9 @@
 #pragma once
 #include <UnDI/Base/Base.h>
+#include <UnDI/RTTI/RTTI.h>
 #include <concepts>
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 
@@ -13,16 +15,17 @@ namespace UN::DI
     class IService
     {
     public:
+        UN_CLASS_RTTI(IService, "53A3EFC1-552E-47F4-9E0C-3DB11932316D");
     };
 
     template<class T>
-    concept ServiceInterface = std::derived_from<T, IService> && requires
+    concept Service = std::derived_from<T, IService> && ImplementsStaticRTTI<T>;
+
+    template<class T>
+    concept ServiceImpl = Service<T> && ImplementsRTTI<T> && requires
     {
-        { T::GetTypeId() } -> std::same_as<int>;
+        &T::CreateHelper;
     };
-
-    template<class T>
-    concept Service = std::derived_from<T, IService>;
 
     class Container
     {
@@ -41,7 +44,7 @@ namespace UN::DI
         template<class T>
         using RemovePtr = typename RemovePtrHelper<std::remove_cvref_t<T>>::Type;
 
-        std::unordered_map<int, std::function<Ptr<IService>(Container&)>> m_Map;
+        std::unordered_map<TypeID, std::function<Ptr<IService>(Container&)>> m_Map;
 
         template<class T, class TFunc, class... Types>
         inline Ptr<T> CreateService([[maybe_unused]] TFunc (*f)(Types...))
@@ -50,10 +53,10 @@ namespace UN::DI
         }
 
     public:
-        template<Service T, ServiceInterface TAs>
+        template<ServiceImpl T, Service TAs>
         inline void RegisterService()
         {
-            m_Map[TAs::GetTypeId()] = [](Container& container) {
+            m_Map[un_typeid<TAs>()] = [](Container& container) {
                 return container.CreateService<T>(T::CreateHelper);
             };
         }
@@ -61,7 +64,9 @@ namespace UN::DI
         template<Service T>
         inline Ptr<T> GetService()
         {
-            return std::static_pointer_cast<T>(m_Map[T::GetTypeId()](*this));
+            auto typeId = un_typeid<T>();
+            assert(m_Map.contains(typeId) && "Service not found");
+            return std::static_pointer_cast<T>(m_Map.at(typeId)(*this));
         }
     };
 } // namespace UN::DI
