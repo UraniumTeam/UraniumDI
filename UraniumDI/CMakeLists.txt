@@ -4,6 +4,9 @@ set(SRC
     UnDI/Base/Platform.h
     UnDI/Base/PlatformTraits.h
 
+    UnDI/Builder/ContainerBuilder.h
+    UnDI/Builder/ContainerBuilder.cpp
+
     UnDI/Memory/IAllocator.h
     UnDI/Memory/Memory.h
     UnDI/Memory/Object.h
@@ -19,6 +22,11 @@ set(SRC
 
     UnDI/Container.h
     UnDI/Container.cpp
+    UnDI/IContainer.h
+
+    UnDI/Lifetime/ILifetimeScope.h
+    UnDI/Lifetime/LifetimeScope.h
+    UnDI/Lifetime/LifetimeScope.cpp
 )
 
 add_library(UnDI STATIC ${SRC})
