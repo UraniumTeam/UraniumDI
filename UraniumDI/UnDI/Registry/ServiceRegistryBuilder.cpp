@@ -5,8 +5,9 @@ namespace UN::DI
 {
     VoidResult<ErrorCode> ServiceRegistryBuilder::Register(const ServiceRegistration& registration)
     {
-        (void)registration;
-        return Err(ErrorCode::NotImplemented);
+        // TODO: check for duplicates
+        m_Registrations.Push(registration);
+        return {};
     }
 
     IServiceRegistry* ServiceRegistryBuilder::Build()

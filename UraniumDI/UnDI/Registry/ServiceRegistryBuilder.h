@@ -78,9 +78,9 @@ namespace UN::DI
         template<class TInterface>
         [[nodiscard]] Internal::RegistryBindBuilder<TInterface> Bind()
         {
-            auto& target = m_Registrations.Emplace();
-            auto id = un_typeid<TInterface>();
-            target.ID = id;
+            auto& target    = m_Registrations.Emplace();
+            auto id         = un_typeid<TInterface>();
+            target.ID       = id;
             target.Lifetime = ServiceLifetime::Scoped;
             return Internal::RegistryBindBuilder<TInterface>(&target);
         }

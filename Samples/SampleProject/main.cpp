@@ -1,6 +1,4 @@
-#include <UnDI/IContainer.h>
-#include <UnDI/Lifetime/LifetimeScope.h>
-#include <UnDI/Registry/ServiceRegistryBuilder.h>
+#include <UnDI/Builder/ContainerBuilder.h>
 #include <format>
 #include <iostream>
 #include <string_view>
@@ -99,19 +97,17 @@ public:
 
 int main()
 {
-    UN::DI::ServiceRegistryBuilder registryBuilder{};
-    registryBuilder.Bind<ILogger>().To<MyLogger>();
-    registryBuilder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
-    registryBuilder.Bind<ITestService>().To<TestService>().InTransientScope();
+    UN::DI::ContainerBuilder builder{};
+    builder.Bind<ILogger>().To<MyLogger>();
+    builder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
+    builder.Bind<ITestService>().To<TestService>().InTransientScope();
 
-    auto* registry = registryBuilder.Build();
+    Ptr<UN::DI::IContainer> container = builder.Build();
 
-    Ptr<UN::DI::ILifetimeScope> scope = UN::AllocateObject<UN::DI::LifetimeScope>(registry);
-
-    Ptr<ILogger> logger1 = scope->Resolve<ILogger>().Unwrap();
+    Ptr<ILogger> logger1 = container->Resolve<ILogger>().Unwrap();
     logger1->Log("Test message!");
 
-    if (Ptr<UN::DI::ILifetimeScope> nestedScope = scope->BeginScope().Unwrap())
+    if (Ptr<UN::DI::ILifetimeScope> nestedScope = container->BeginScope().Unwrap())
     {
         Ptr<ILogger> logger2 = nestedScope->Resolve<ILogger>().Unwrap();
         logger2->Log("Test message!");
@@ -120,7 +116,7 @@ int main()
         logger3->Log("Test message!");
     }
 
-    Ptr<ITestService> service = scope->Resolve<ITestService>().Unwrap();
+    Ptr<ITestService> service = container->Resolve<ITestService>().Unwrap();
     service->Run();
 
     return 0;

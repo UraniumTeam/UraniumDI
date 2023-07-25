@@ -5,12 +5,12 @@
 
 namespace UN::DI
 {
-    class IContainer : public ILifetimeScope
+    class IContainer : public IServiceProvider
     {
     public:
         UN_RTTI_Class(IContainer, "C8321BA9-205F-4DFB-8339-DE405337F5CC");
 
-        virtual ILifetimeScope* GetRootScope() = 0;
+        [[nodiscard]] virtual ILifetimeScope* GetRootScope() const = 0;
     };
 
 #define UN_Injectable(Type, ...)                                                                                                 \

@@ -1,9 +1,10 @@
 #include <UnDI/Builder/ContainerBuilder.h>
+#include <UnDI/Container.h>
 
 namespace UN::DI
 {
-    Result<IContainer*, ErrorCode> ContainerBuilder::Build()
+    IContainer* ContainerBuilder::Build()
     {
-        return Err(ErrorCode::NotImplemented);
+        return AllocateObject<Container>(m_Builder.Build());
     }
 } // namespace UN::DI
