@@ -34,7 +34,8 @@ set(SRC
     UnDI/Registry/ServiceRegistry.cpp
     UnDI/Containers/List.h
     UnDI/Registry/ServiceRegistryBuilder.h
-    UnDI/Registry/ServiceRegistryBuilder.cpp)
+    UnDI/Registry/ServiceRegistryBuilder.cpp
+    UnDI/IServiceProvider.h)
 
 add_library(UnDI STATIC ${SRC})
 

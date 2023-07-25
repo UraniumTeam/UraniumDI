@@ -1,5 +1,5 @@
 #pragma once
-#include <UnDI/Lifetime/ILifetimeScope.h>
+#include <UnDI/IServiceProvider.h>
 #include <UnDI/Memory/Memory.h>
 #include <optional>
 
@@ -7,15 +7,15 @@ namespace UN::DI
 {
     class ServiceActivator final
     {
-        typedef Result<IObject*, ServiceResolveErrorCode> (*ActivatorImpl)(ILifetimeScope*);
+        typedef Result<IObject*, ErrorCode> (*ActivatorImpl)(IServiceProvider*);
 
         ActivatorImpl m_pImpl;
 
         class Context
         {
             IAllocator* m_pAllocator;
-            ILifetimeScope* m_pLifetimeScope;
-            std::optional<ServiceResolveErrorCode> m_ResolveError;
+            IServiceProvider* m_pLifetimeScope;
+            std::optional<ErrorCode> m_ResolveError;
 
             template<class T>
             struct RemovePtrHelper
@@ -33,14 +33,14 @@ namespace UN::DI
             using RemovePtr = typename RemovePtrHelper<std::remove_cvref_t<T>>::Type;
 
         public:
-            inline explicit Context(IAllocator* pAllocator, ILifetimeScope* pScope)
+            inline explicit Context(IAllocator* pAllocator, IServiceProvider* pScope)
                 : m_pAllocator(pAllocator)
                 , m_pLifetimeScope(pScope)
                 , m_ResolveError()
             {
             }
 
-            [[nodiscard]] inline std::optional<ServiceResolveErrorCode> GetResolveError() const
+            [[nodiscard]] inline std::optional<ErrorCode> GetResolveError() const
             {
                 return m_ResolveError;
             }
@@ -57,7 +57,7 @@ namespace UN::DI
                 auto result = m_pLifetimeScope->Resolve(id);
                 if (result)
                 {
-                    return result.Unwrap();
+                    return static_cast<T*>(result.Unwrap());
                 }
 
                 m_ResolveError = result.UnwrapErr();
@@ -74,11 +74,16 @@ namespace UN::DI
     public:
         UN_RTTI_Struct(ServiceActivator, "E876EADA-6B71-4F3E-B072-C84B0486A47B");
 
+        inline Result<IObject*, ErrorCode> Invoke(IServiceProvider* pProvider)
+        {
+            return m_pImpl(pProvider);
+        }
+
         template<class T>
         inline static ServiceActivator CreateForType()
         {
-            ServiceActivator result{ };
-            result.m_pImpl = [](ILifetimeScope* pScope) -> Result<IObject*, ServiceResolveErrorCode> {
+            ServiceActivator result{};
+            result.m_pImpl = [](IServiceProvider* pScope) -> Result<IObject*, ErrorCode> {
                 // TODO: resolve allocator from container
                 IAllocator* pAllocator = SystemAllocator::Get();
                 Context ctx(pAllocator, pScope);

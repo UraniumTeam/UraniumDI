@@ -2,22 +2,21 @@
 #include <cassert>
 #include <cstdint>
 
-namespace UN
+namespace UN::DI
 {
-    //! \brief Represents a general error result of a function call within the library.
-    //!
-    //! Different functions may have their own error codes, but this enum should be enough for a general case.
+    //! \brief Represents an error result of a function call within the library.
     enum class ErrorCode : uint32_t
     {
-        Fail,             //!< Operation failed.
-        Abort,            //!< Operation aborted.
-        NotImplemented,   //!< Operation not implemented.
-        InvalidOperation, //!< Operation was invalid.
-        InvalidArguments, //!< One or more arguments were invalid.
-        NotFound,         //!< One or more arguments were not found.
-        AccessDenied,     //!< General access denied error occurred.
-        Timeout,          //!< Operation timed out.
-        OutOfMemory       //!< Not enough memory to complete the operation.
+        Fail,               //!< Operation failed.
+        Abort,              //!< Operation aborted.
+        NotImplemented,     //!< Operation not implemented.
+        InvalidOperation,   //!< Operation was invalid.
+        InvalidArguments,   //!< One or more arguments were invalid.
+        NotFound,           //!< One or more arguments were not found.
+        CircularDependency, //!< Service activation failed because of circular dependencies.
+        AccessDenied,       //!< General access denied error occurred.
+        Timeout,            //!< Operation timed out.
+        OutOfMemory         //!< Not enough memory to complete the operation.
     };
 
     //! \brief Get a constant string that represents an ErrorCode enum value.
@@ -32,6 +31,7 @@ namespace UN
         case ErrorCode::InvalidOperation: return "ErrorCode::InvalidOperation";
         case ErrorCode::InvalidArguments: return "ErrorCode::InvalidArguments";
         case ErrorCode::NotFound: return "ErrorCode::NotFound";
+        case ErrorCode::CircularDependency: return "ErrorCode::CircularDependency";
         case ErrorCode::AccessDenied: return "ErrorCode::AccessDenied";
         case ErrorCode::Timeout: return "ErrorCode::Timeout";
         case ErrorCode::OutOfMemory: return "ErrorCode::OutOfMemory";

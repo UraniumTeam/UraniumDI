@@ -1,5 +1,6 @@
-#include <UnDI/Registry/ServiceRegistryBuilder.h>
 #include <UnDI/IContainer.h>
+#include <UnDI/Lifetime/LifetimeScope.h>
+#include <UnDI/Registry/ServiceRegistryBuilder.h>
 #include <format>
 #include <iostream>
 #include <string_view>
@@ -36,7 +37,15 @@ class MyLogger : public Object<ILogger>
 {
 public:
     UN_RTTI_Class(MyLogger, "71963929-6C8A-42F5-B6E9-70F23510C71A");
-    UN_Injectable(inline MyLogger) {}
+    UN_Injectable(inline MyLogger)
+    {
+        std::cout << "Logger created!" << std::endl;
+    }
+
+    ~MyLogger() override
+    {
+        std::cout << "Logger deleted!" << std::endl;
+    }
 
     inline void Log(const std::string_view& message) override
     {
@@ -76,6 +85,11 @@ public:
         m_Logger->Log("Logger injected in TestService!");
     }
 
+    ~TestService() override
+    {
+        m_Logger->Log("TestService deleted!");
+    }
+
     inline void Run() override
     {
         auto data = m_Database->LoadData();
@@ -86,8 +100,28 @@ public:
 int main()
 {
     UN::DI::ServiceRegistryBuilder registryBuilder{};
-    registryBuilder.Bind<ILogger>().To<MyLogger>().InSingletonScope();
+    registryBuilder.Bind<ILogger>().To<MyLogger>();
+    registryBuilder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
+    registryBuilder.Bind<ITestService>().To<TestService>().InTransientScope();
+
     auto* registry = registryBuilder.Build();
-    (void)registry;
+
+    Ptr<UN::DI::ILifetimeScope> scope = UN::AllocateObject<UN::DI::LifetimeScope>(registry);
+
+    Ptr<ILogger> logger1 = scope->Resolve<ILogger>().Unwrap();
+    logger1->Log("Test message!");
+
+    if (Ptr<UN::DI::ILifetimeScope> nestedScope = scope->BeginScope().Unwrap())
+    {
+        Ptr<ILogger> logger2 = nestedScope->Resolve<ILogger>().Unwrap();
+        logger2->Log("Test message!");
+
+        Ptr<ILogger> logger3 = nestedScope->Resolve<ILogger>().Unwrap();
+        logger3->Log("Test message!");
+    }
+
+    Ptr<ITestService> service = scope->Resolve<ITestService>().Unwrap();
+    service->Run();
+
     return 0;
 }
