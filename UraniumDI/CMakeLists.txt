@@ -7,6 +7,8 @@ set(SRC
     UnDI/Builder/ContainerBuilder.h
     UnDI/Builder/ContainerBuilder.cpp
 
+    UnDI/Containers/List.h
+
     UnDI/Lifetime/ILifetimeScope.h
     UnDI/Lifetime/LifetimeScope.h
     UnDI/Lifetime/LifetimeScope.cpp
@@ -18,24 +20,25 @@ set(SRC
     UnDI/Memory/ReferenceCounter.h
     UnDI/Memory/SystemAllocator.h
 
+    UnDI/Registry/IServiceRegistry.h
+    UnDI/Registry/ServiceRegistry.h
+    UnDI/Registry/ServiceRegistry.cpp
+    UnDI/Registry/ServiceRegistryBuilder.h
+    UnDI/Registry/ServiceRegistryBuilder.cpp
+
     UnDI/RTTI/RTTI.h
 
     UnDI/Utils/UUID.h
     UnDI/Utils/Result.h
     UnDI/Utils/ErrorCode.h
 
+    UnDI/IContainer.h
     UnDI/Container.h
     UnDI/Container.cpp
-    UnDI/IContainer.h
     UnDI/ServiceRegistration.h
     UnDI/ServiceActivator.h
-    UnDI/Registry/IServiceRegistry.h
-    UnDI/Registry/ServiceRegistry.h
-    UnDI/Registry/ServiceRegistry.cpp
-    UnDI/Containers/List.h
-    UnDI/Registry/ServiceRegistryBuilder.h
-    UnDI/Registry/ServiceRegistryBuilder.cpp
-    UnDI/IServiceProvider.h)
+    UnDI/IServiceProvider.h
+)
 
 add_library(UnDI STATIC ${SRC})
 

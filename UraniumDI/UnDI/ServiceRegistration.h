@@ -1,5 +1,4 @@
 #pragma once
-#include <UnDI/Lifetime/ILifetimeScope.h>
 #include <UnDI/RTTI/RTTI.h>
 #include <UnDI/ServiceActivator.h>
 #include <functional>

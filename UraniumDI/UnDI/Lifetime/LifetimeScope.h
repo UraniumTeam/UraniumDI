@@ -1,11 +1,13 @@
 #pragma once
 #include <UnDI/Lifetime/ILifetimeScope.h>
 #include <UnDI/Memory/Memory.h>
-#include <UnDI/Registry/IServiceRegistry.h>
 #include <unordered_map>
 
 namespace UN::DI
 {
+    class IServiceRegistry;
+    struct ServiceRegistration;
+
     class LifetimeScope : public Object<ILifetimeScope>
     {
         // TODO: use IAllocator for this map

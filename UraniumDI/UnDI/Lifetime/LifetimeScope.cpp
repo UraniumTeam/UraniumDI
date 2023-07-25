@@ -1,5 +1,7 @@
 #include <UnDI/Lifetime/ILifetimeScope.h>
 #include <UnDI/Lifetime/LifetimeScope.h>
+#include <UnDI/Registry/IServiceRegistry.h>
+#include <UnDI/ServiceRegistration.h>
 
 namespace UN::DI
 {

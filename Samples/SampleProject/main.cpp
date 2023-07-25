@@ -1,4 +1,5 @@
 #include <UnDI/Builder/ContainerBuilder.h>
+#include <UnDI/Lifetime/ILifetimeScope.h>
 #include <format>
 #include <iostream>
 #include <string_view>

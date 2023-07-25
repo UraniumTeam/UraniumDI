@@ -1,9 +1,11 @@
 #pragma once
 #include <UnDI/Memory/Memory.h>
-#include <UnDI/ServiceRegistration.h>
+#include <UnDI/Utils/Result.h>
 
 namespace UN::DI
 {
+    struct ServiceRegistration;
+
     class IServiceRegistry : public IObject
     {
     public:

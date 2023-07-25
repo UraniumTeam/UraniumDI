@@ -1,6 +1,7 @@
 #pragma once
 #include <UnDI/IContainer.h>
 #include <UnDI/Lifetime/LifetimeScope.h>
+#include <UnDI/Registry/IServiceRegistry.h>
 #include <UnDI/RTTI/RTTI.h>
 
 namespace UN::DI
@@ -22,7 +23,7 @@ namespace UN::DI
         ~Container() override = default;
 
         Result<ILifetimeScope*, ErrorCode> BeginScope() override;
-        ILifetimeScope* GetRootScope() const override;
+        [[nodiscard]] ILifetimeScope* GetRootScope() const override;
         Result<IObject*, ErrorCode> Resolve(const UUID& registrationID) override;
     };
 } // namespace UN::DI

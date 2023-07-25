@@ -1,10 +1,12 @@
 #pragma once
 #include <UnDI/Base/Base.h>
-#include <UnDI/Lifetime/ILifetimeScope.h>
+#include <UnDI/IServiceProvider.h>
 #include <UnDI/Memory/Memory.h>
 
 namespace UN::DI
 {
+    class ILifetimeScope;
+
     class IContainer : public IServiceProvider
     {
     public:
