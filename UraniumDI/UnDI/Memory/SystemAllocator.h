@@ -27,12 +27,12 @@ namespace UN
 
     inline void* SystemAllocator::Allocate(USize size, USize alignment)
     {
-        return UN_ALIGNED_MALLOC(size, alignment);
+        return UN_AlignedMalloc(size, alignment);
     }
 
     inline void SystemAllocator::Deallocate(void* pointer)
     {
-        return UN_ALIGNED_FREE(pointer);
+        return UN_AlignedFree(pointer);
     }
 
     inline const char* SystemAllocator::GetName() const

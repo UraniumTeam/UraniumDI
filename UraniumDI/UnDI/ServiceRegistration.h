@@ -1,15 +1,24 @@
 #pragma once
-#include <UnDI/ServiceActivator.h>
 #include <UnDI/Lifetime/ILifetimeScope.h>
 #include <UnDI/RTTI/RTTI.h>
+#include <UnDI/ServiceActivator.h>
 #include <functional>
 
 namespace UN::DI
 {
-    struct ServiceRegistration
+    enum class ServiceLifetime
     {
-        UUID Id;
+        Singleton,
+        Scoped,
+        Transient
+    };
+
+    struct ServiceRegistration final
+    {
+        UUID ID;
         ServiceActivator Activator;
-        ILifetimeScope* pLifetime;
+        ServiceLifetime Lifetime;
+
+        UN_RTTI_Struct(ServiceRegistration, "00BFB3D7-E5E0-4A62-A716-B6668B79B771");
     };
 } // namespace UN::DI

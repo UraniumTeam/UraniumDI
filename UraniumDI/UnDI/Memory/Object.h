@@ -65,7 +65,7 @@ namespace UN
         }
 
     public:
-        UN_RTTI_Class(Object, "5617B2CC-C963-45D5-8191-F14A06420954");
+        UN_RTTI_Class(Object<TInterface>, "5617B2CC-C963-45D5-8191-F14A06420954");
 
         Object() = default;
 

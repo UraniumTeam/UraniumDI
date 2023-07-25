@@ -70,11 +70,3 @@ namespace UN::DI
         }
     };
 } // namespace UN::DI
-
-#define UN_Injectable(Type, ...)                                                                                                 \
-    UN_PUSH_MSVC_WARNING(4100);                                                                                                  \
-    inline static void CreateHelper(__VA_ARGS__)                                                                                 \
-    {                                                                                                                            \
-    }                                                                                                                            \
-    UN_POP_MSVC_WARNING;                                                                                                         \
-    Type(__VA_ARGS__)

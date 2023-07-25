@@ -29,7 +29,12 @@ set(SRC
     UnDI/IContainer.h
     UnDI/ServiceRegistration.h
     UnDI/ServiceActivator.h
-)
+    UnDI/Registry/IServiceRegistry.h
+    UnDI/Registry/ServiceRegistry.h
+    UnDI/Registry/ServiceRegistry.cpp
+    UnDI/Containers/List.h
+    UnDI/Registry/ServiceRegistryBuilder.h
+    UnDI/Registry/ServiceRegistryBuilder.cpp)
 
 add_library(UnDI STATIC ${SRC})
 

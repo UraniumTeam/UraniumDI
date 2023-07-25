@@ -14,6 +14,7 @@ namespace UN
         NotImplemented,   //!< Operation not implemented.
         InvalidOperation, //!< Operation was invalid.
         InvalidArguments, //!< One or more arguments were invalid.
+        NotFound,         //!< One or more arguments were not found.
         AccessDenied,     //!< General access denied error occurred.
         Timeout,          //!< Operation timed out.
         OutOfMemory       //!< Not enough memory to complete the operation.
@@ -28,8 +29,9 @@ namespace UN
         case ErrorCode::Fail: return "ErrorCode::Fail";
         case ErrorCode::Abort: return "ErrorCode::Abort";
         case ErrorCode::NotImplemented: return "ErrorCode::NotImplemented";
-        case ErrorCode::InvalidArguments: return "ErrorCode::InvalidArguments";
         case ErrorCode::InvalidOperation: return "ErrorCode::InvalidOperation";
+        case ErrorCode::InvalidArguments: return "ErrorCode::InvalidArguments";
+        case ErrorCode::NotFound: return "ErrorCode::NotFound";
         case ErrorCode::AccessDenied: return "ErrorCode::AccessDenied";
         case ErrorCode::Timeout: return "ErrorCode::Timeout";
         case ErrorCode::OutOfMemory: return "ErrorCode::OutOfMemory";

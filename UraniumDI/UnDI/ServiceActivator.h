@@ -5,14 +5,9 @@
 
 namespace UN::DI
 {
-    enum class ServiceActivateErrorCode
-    {
-        CircularDependency
-    };
-
     class ServiceActivator final
     {
-        typedef Result<IObject*, ServiceActivateErrorCode> (*ActivatorImpl)(ILifetimeScope*);
+        typedef Result<IObject*, ServiceResolveErrorCode> (*ActivatorImpl)(ILifetimeScope*);
 
         ActivatorImpl m_pImpl;
 
@@ -77,22 +72,25 @@ namespace UN::DI
         };
 
     public:
+        UN_RTTI_Struct(ServiceActivator, "E876EADA-6B71-4F3E-B072-C84B0486A47B");
+
         template<class T>
         inline static ServiceActivator CreateForType()
         {
-            ServiceActivator result{ .m_pImpl = [](ILifetimeScope* pScope) {
+            ServiceActivator result{ };
+            result.m_pImpl = [](ILifetimeScope* pScope) -> Result<IObject*, ServiceResolveErrorCode> {
                 // TODO: resolve allocator from container
                 IAllocator* pAllocator = SystemAllocator::Get();
                 Context ctx(pAllocator, pScope);
 
-                auto* obj = ctx.CreateService<T>(pAllocator, T::CreateHelper);
+                auto* obj = ctx.CreateService<T>(T::CreateHelper);
                 if (auto err = ctx.GetResolveError())
                 {
                     return Err(err.value());
                 }
 
-                return obj;
-            } };
+                return static_cast<IObject*>(obj);
+            };
 
             return result;
         }
