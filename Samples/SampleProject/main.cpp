@@ -120,5 +120,8 @@ int main()
     Ptr<ITestService> service = container->Resolve<ITestService>().Unwrap();
     service->Run();
 
+    Ptr<IDatabase> db = container->Resolve<IDatabase>().Unwrap();
+    logger1->Log(std::format("Data loaded: {}", db->LoadData()));
+
     return 0;
 }

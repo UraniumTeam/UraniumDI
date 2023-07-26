@@ -66,8 +66,6 @@ namespace UN::DI
 
     class ServiceRegistryBuilder final
     {
-        // TODO: benchmark in which cases a hash map would be more efficient
-        // or maybe we should use binary search instead
         List<ServiceRegistration> m_Registrations;
 
     public:

@@ -104,6 +104,22 @@ namespace UN
         }
     };
 
+    inline std::strong_ordering operator<=>(const UUID& lhs, const UUID& rhs)
+    {
+        auto* l = reinterpret_cast<const UInt64*>(lhs.Data.data());
+        auto* r = reinterpret_cast<const UInt64*>(rhs.Data.data());
+
+        auto c0 = l[0] <=> r[0];
+        auto c1 = l[1] <=> r[1];
+
+        if (c0 != std::strong_ordering::equal)
+        {
+            return c0;
+        }
+
+        return c1;
+    }
+
     inline bool operator==(const UUID& lhs, const UUID& rhs)
     {
         return std::equal(lhs.Data.begin(), lhs.Data.end(), rhs.Data.begin());

@@ -12,6 +12,7 @@ namespace UN::DI
 
     IServiceRegistry* ServiceRegistryBuilder::Build()
     {
+        m_Registrations.SortByMember(&ServiceRegistration::ID);
         return AllocateObject<ServiceRegistry>(std::move(m_Registrations));
     }
 } // namespace UN::DI
