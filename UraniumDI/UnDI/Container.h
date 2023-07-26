@@ -2,7 +2,7 @@
 #include <UnDI/IContainer.h>
 #include <UnDI/Lifetime/LifetimeScope.h>
 #include <UnDI/Registry/IServiceRegistry.h>
-#include <UnDI/RTTI/RTTI.h>
+#include <UnTL/RTTI/RTTI.h>
 
 namespace UN::DI
 {

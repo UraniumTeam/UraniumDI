@@ -41,4 +41,4 @@ namespace UN::DI
             return "ErrorCode::<Unknown>";
         }
     }
-} // namespace UN
+} // namespace UN::DI
