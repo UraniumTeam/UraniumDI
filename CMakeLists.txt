@@ -8,6 +8,7 @@ set(UN_PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
 list(PREPEND CMAKE_MODULE_PATH "${UN_PROJECT_ROOT}/cmake")
 
 include(Config)
+include(ThirdParty/get_cpm)
 include(ThirdParty/gtest)
 
 set(CMAKE_CXX_STANDARD 20)
