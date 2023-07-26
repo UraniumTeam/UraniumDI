@@ -1,6 +1,6 @@
 #pragma once
 #include <UnDI/IServiceProvider.h>
-#include <UnDI/Memory/Memory.h>
+#include <UnTL/Memory/Memory.h>
 #include <optional>
 
 namespace UN::DI

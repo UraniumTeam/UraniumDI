@@ -1,5 +1,5 @@
 #pragma once
-#include <UnDI/Containers/List.h>
+#include <UnTL/Containers/List.h>
 #include <UnDI/ServiceRegistration.h>
 
 namespace UN::DI
@@ -66,8 +66,6 @@ namespace UN::DI
 
     class ServiceRegistryBuilder final
     {
-        // TODO: benchmark in which cases a hash map would be more efficient
-        // or maybe we should use binary search instead
         List<ServiceRegistration> m_Registrations;
 
     public:

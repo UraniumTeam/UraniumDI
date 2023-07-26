@@ -13,4 +13,5 @@ target_link_libraries(UnDITests gtest gmock UnDI)
 get_property("TARGET_SOURCE_FILES" TARGET UnDITests PROPERTY SOURCES)
 source_group(TREE "${CMAKE_CURRENT_LIST_DIR}" FILES ${TARGET_SOURCE_FILES})
 
+include(GoogleTest)
 gtest_discover_tests(UnDITests)

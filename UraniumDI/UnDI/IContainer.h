@@ -1,7 +1,7 @@
 #pragma once
-#include <UnDI/Base/Base.h>
+#include <UnTL/Base/Base.h>
 #include <UnDI/IServiceProvider.h>
-#include <UnDI/Memory/Memory.h>
+#include <UnTL/Memory/Memory.h>
 
 namespace UN::DI
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include <UnDI/Lifetime/ILifetimeScope.h>
-#include <UnDI/Memory/Memory.h>
+#include <UnTL/Memory/Memory.h>
 #include <unordered_map>
 
 namespace UN::DI

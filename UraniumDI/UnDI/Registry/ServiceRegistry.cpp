@@ -4,12 +4,13 @@ namespace UN::DI
 {
     Result<ServiceRegistration*, ErrorCode> ServiceRegistry::GetRegistration(const UUID& uuid)
     {
-        for (auto& item : m_Registrations)
+        auto iter = std::lower_bound(m_Registrations.begin(), m_Registrations.end(), uuid, [](auto reg, auto id) {
+            return reg.ID < id;
+        });
+
+        if (iter != m_Registrations.end() && iter->ID == uuid)
         {
-            if (item.ID == uuid)
-            {
-                return &item;
-            }
+            return iter;
         }
 
         return Err(ErrorCode::NotFound);
