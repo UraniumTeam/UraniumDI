@@ -4,6 +4,8 @@ set(SRC
 
     UnDI/Config/Reg/MemoryConfigurationRegistry.h
     UnDI/Config/Reg/MemoryConfigurationRegistry.cpp
+    UnDI/Config/Reg/CommandLineConfigurationRegistry.cpp
+    UnDI/Config/Reg/CommandLineConfigurationRegistry.h
     UnDI/Config/IConfiguration.h
     UnDI/Config/IConfigurationSection.h
     UnDI/Config/IConfigurationRegistry.h
