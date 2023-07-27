@@ -103,24 +103,24 @@ int main()
     builder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
     builder.Bind<ITestService>().To<TestService>().InTransientScope();
 
-    Ptr<UN::DI::IContainer> container = builder.Build();
+    Ptr container = builder.Build();
 
-    Ptr<ILogger> logger1 = container->Resolve<ILogger>().Unwrap();
+    Ptr logger1 = container->Resolve<ILogger>().Unwrap();
     logger1->Log("Test message!");
 
-    if (Ptr<UN::DI::ILifetimeScope> nestedScope = container->BeginScope().Unwrap())
+    if (Ptr nestedScope = container->BeginScope().Unwrap())
     {
-        Ptr<ILogger> logger2 = nestedScope->Resolve<ILogger>().Unwrap();
+        Ptr logger2 = nestedScope->Resolve<ILogger>().Unwrap();
         logger2->Log("Test message!");
 
-        Ptr<ILogger> logger3 = nestedScope->Resolve<ILogger>().Unwrap();
+        Ptr logger3 = nestedScope->Resolve<ILogger>().Unwrap();
         logger3->Log("Test message!");
     }
 
-    Ptr<ITestService> service = container->Resolve<ITestService>().Unwrap();
+    Ptr service = container->Resolve<ITestService>().Unwrap();
     service->Run();
 
-    Ptr<IDatabase> db = container->Resolve<IDatabase>().Unwrap();
+    Ptr db = container->Resolve<IDatabase>().Unwrap();
     logger1->Log(std::format("Data loaded: {}", db->LoadData()));
 
     return 0;
