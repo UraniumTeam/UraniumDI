@@ -2,6 +2,18 @@ set(SRC
     UnDI/Builder/ContainerBuilder.h
     UnDI/Builder/ContainerBuilder.cpp
 
+    UnDI/Config/Reg/MemoryConfigurationRegistry.h
+    UnDI/Config/Reg/MemoryConfigurationRegistry.cpp
+    UnDI/Config/IConfiguration.h
+    UnDI/Config/IConfigurationSection.h
+    UnDI/Config/IConfigurationRegistry.h
+    UnDI/Config/ConfigurationSection.h
+    UnDI/Config/ConfigurationSection.cpp
+    UnDI/Config/ConfigurationBuilder.h
+    UnDI/Config/ConfigurationBuilder.cpp
+    UnDI/Config/Configuration.h
+    UnDI/Config/Configuration.cpp
+
     UnDI/Lifetime/ILifetimeScope.h
     UnDI/Lifetime/LifetimeScope.h
     UnDI/Lifetime/LifetimeScope.cpp
