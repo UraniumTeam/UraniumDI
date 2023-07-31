@@ -58,7 +58,7 @@ class MyDatabase : public Object<IDatabase>
 
 public:
     UN_RTTI_Class(MyDatabase, "F1976DA2-FB38-4BF8-8F3E-9836A7713F06");
-    UN_Injectable(inline explicit MyDatabase, const Ptr<ILogger>& logger)
+    UN_Injectable(inline explicit MyDatabase, ILogger* logger)
         : m_Logger(logger)
     {
     }
