@@ -49,4 +49,6 @@ target_link_libraries(UnDI UnTL)
 get_property("TARGET_SOURCE_FILES" TARGET UnDI PROPERTY SOURCES)
 source_group(TREE "${CMAKE_CURRENT_LIST_DIR}" FILES ${TARGET_SOURCE_FILES})
 
-add_subdirectory(Tests)
+if (UN_BUILD_TESTS)
+    add_subdirectory(Tests)
+endif ()
