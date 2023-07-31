@@ -98,9 +98,17 @@ public:
 
 int main()
 {
+    auto dbFactory = [](UN::DI::IServiceProvider* pServices) -> UN::Result<IObject*, UN::DI::ErrorCode> {
+        auto logger = pServices->Resolve<ILogger>();
+        UN_GuardResult(logger);
+        return UN::AllocateObject<MyDatabase>(logger.Unwrap());
+    };
+
     UN::DI::ContainerBuilder builder{};
     builder.Bind<ILogger>().To<MyLogger>();
-    builder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
+    // Ptr logger = UN::AllocateObject<MyLogger>();
+    // builder.Bind<ILogger>().ToConst(logger.Get());
+    builder.Bind<IDatabase>().ToFunc(dbFactory).InSingletonScope();
     builder.Bind<ITestService>().To<TestService>().InTransientScope();
 
     Ptr container = builder.Build();
