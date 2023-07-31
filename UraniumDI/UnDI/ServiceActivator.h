@@ -30,6 +30,12 @@ namespace UN::DI
             };
 
             template<class T>
+            struct RemovePtrHelper<T*>
+            {
+                typedef T Type;
+            };
+
+            template<class T>
             using RemovePtr = typename RemovePtrHelper<std::remove_cvref_t<T>>::Type;
 
         public:
