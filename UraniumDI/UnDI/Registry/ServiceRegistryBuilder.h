@@ -1,6 +1,6 @@
 #pragma once
-#include <UnTL/Containers/List.h>
 #include <UnDI/ServiceRegistration.h>
+#include <UnTL/Containers/List.h>
 
 namespace UN::DI
 {
@@ -54,6 +54,22 @@ namespace UN::DI
             {
                 m_pTarget->Activator = ServiceActivator::CreateForType<TImpl>();
                 return RegistryToBuilder(m_pTarget);
+            }
+
+            inline RegistryToBuilder ToFunc(ActivatorFunc function)
+            {
+                m_pTarget->Activator = ServiceActivator::CreateForFunc(function);
+                return RegistryToBuilder(m_pTarget);
+            }
+
+            inline void ToConst(TInterface* pConst)
+            {
+                auto factory = [pConst](IServiceProvider*) -> Result<IObject*, ErrorCode> {
+                    return static_cast<IObject*>(pConst);
+                };
+
+                m_pTarget->Activator = ServiceActivator::CreateForFunc(factory);
+                m_pTarget->Lifetime  = ServiceLifetime ::Singleton;
             }
 
             inline RegistryToBuilder ToSelf()

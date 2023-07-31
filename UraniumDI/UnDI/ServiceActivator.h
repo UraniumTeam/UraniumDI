@@ -1,15 +1,16 @@
 #pragma once
 #include <UnDI/IServiceProvider.h>
 #include <UnTL/Memory/Memory.h>
+#include <functional>
 #include <optional>
 
 namespace UN::DI
 {
+    using ActivatorFunc = std::function<Result<IObject*, ErrorCode>(IServiceProvider*)>;
+
     class ServiceActivator final
     {
-        typedef Result<IObject*, ErrorCode> (*ActivatorImpl)(IServiceProvider*);
-
-        ActivatorImpl m_pImpl;
+        ActivatorFunc m_Func;
 
         class Context
         {
@@ -82,14 +83,21 @@ namespace UN::DI
 
         inline Result<IObject*, ErrorCode> Invoke(IServiceProvider* pProvider)
         {
-            return m_pImpl(pProvider);
+            return m_Func(pProvider);
+        }
+
+        inline static ServiceActivator CreateForFunc(ActivatorFunc function)
+        {
+            ServiceActivator result{};
+            result.m_Func = function;
+            return result;
         }
 
         template<class T>
         inline static ServiceActivator CreateForType()
         {
             ServiceActivator result{};
-            result.m_pImpl = [](IServiceProvider* pScope) -> Result<IObject*, ErrorCode> {
+            result.m_Func = [](IServiceProvider* pScope) -> Result<IObject*, ErrorCode> {
                 // TODO: resolve allocator from container
                 IAllocator* pAllocator = SystemAllocator::Get();
                 Context ctx(pAllocator, pScope);
