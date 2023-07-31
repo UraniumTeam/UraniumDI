@@ -105,11 +105,15 @@ int main()
 
     Ptr container = builder.Build();
 
+    UN_Assert(container->Resolve<UN::DI::IServiceProvider>().Unwrap() == container->GetRootScope(), "");
+
     Ptr logger1 = container->Resolve<ILogger>().Unwrap();
     logger1->Log("Test message!");
 
     if (Ptr nestedScope = container->BeginScope().Unwrap())
     {
+        UN_Assert(nestedScope->Resolve<UN::DI::IServiceProvider>().Unwrap() == nestedScope, "");
+
         Ptr logger2 = nestedScope->Resolve<ILogger>().Unwrap();
         logger2->Log("Test message!");
 

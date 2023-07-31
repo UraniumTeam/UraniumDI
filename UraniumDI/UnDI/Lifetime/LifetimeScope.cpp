@@ -40,6 +40,11 @@ namespace UN::DI
 
     Result<IObject*, ErrorCode> LifetimeScope::Resolve(const UUID& registrationID)
     {
+        if (registrationID == un_typeid<IServiceProvider>())
+        {
+            return this;
+        }
+
         auto result = m_pRegistry->GetRegistration(registrationID);
         UN_Guard(result, result.UnwrapErr());
         auto* registration = result.Unwrap();
