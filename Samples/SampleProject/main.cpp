@@ -36,7 +36,7 @@ class MyLogger : public Object<ILogger>
 {
 public:
     UN_RTTI_Class(MyLogger, "71963929-6C8A-42F5-B6E9-70F23510C71A");
-    UN_Injectable(inline MyLogger)
+    inline MyLogger()
     {
         std::cout << "Logger created!" << std::endl;
     }
@@ -58,7 +58,7 @@ class MyDatabase : public Object<IDatabase>
 
 public:
     UN_RTTI_Class(MyDatabase, "F1976DA2-FB38-4BF8-8F3E-9836A7713F06");
-    UN_Injectable(inline explicit MyDatabase, ILogger* logger)
+    inline explicit MyDatabase(ILogger* logger)
         : m_Logger(logger)
     {
     }
@@ -77,7 +77,7 @@ class TestService : public Object<ITestService>
 
 public:
     UN_RTTI_Class(TestService, "64C8155D-67ED-4BF1-A475-5C095C7DCDD7");
-    UN_Injectable(inline TestService, const Ptr<ILogger>& logger, const Ptr<IDatabase>& db)
+    inline TestService(const Ptr<ILogger>& logger, const Ptr<IDatabase>& db)
         : m_Logger(logger)
         , m_Database(db)
     {
@@ -109,6 +109,7 @@ int main()
     // Ptr logger = UN::AllocateObject<MyLogger>();
     // builder.Bind<ILogger>().ToConst(logger.Get());
     builder.Bind<IDatabase>().ToFunc(dbFactory).InSingletonScope();
+    // builder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
     builder.Bind<ITestService>().To<TestService>().InTransientScope();
 
     Ptr container = builder.Build();
