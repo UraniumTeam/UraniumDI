@@ -3,9 +3,37 @@
 #include <UnTL/Memory/Memory.h>
 #include <functional>
 #include <optional>
+#include <utility>
 
 namespace UN::DI
 {
+    namespace Internal
+    {
+        template<class T>
+        struct RemovePtrHelper
+        {
+            typedef T Type;
+        };
+
+        template<class T>
+        struct RemovePtrHelper<Ptr<T>>
+        {
+            typedef T Type;
+        };
+
+        template<class T>
+        struct RemovePtrHelper<T*>
+        {
+            typedef T Type;
+        };
+
+        template<class T>
+        using RemovePtr = typename RemovePtrHelper<std::remove_cvref_t<T>>::Type;
+
+        template<class T>
+        concept IsPointer = std::is_pointer_v<T> || std::is_same_v<Ptr<RemovePtr<T>>, std::remove_cvref_t<T>>;
+    }
+
     using ActivatorFunc = std::function<Result<IObject*, ErrorCode>(IServiceProvider*)>;
 
     class ServiceActivator final
@@ -18,26 +46,21 @@ namespace UN::DI
             IServiceProvider* m_pLifetimeScope;
             std::optional<ErrorCode> m_ResolveError;
 
-            template<class T>
-            struct RemovePtrHelper
+            struct ArgResolver
             {
-                typedef T Type;
-            };
+                Context* Ctx;
 
-            template<class T>
-            struct RemovePtrHelper<Ptr<T>>
-            {
-                typedef T Type;
-            };
+                UN_FINLINE explicit constexpr ArgResolver(Context* ctx)
+                    : Ctx(ctx)
+                {
+                }
 
-            template<class T>
-            struct RemovePtrHelper<T*>
-            {
-                typedef T Type;
+                template<Internal::IsPointer T>
+                UN_FINLINE operator T() // NOLINT(google-explicit-constructor)
+                {
+                    return Ctx->GetService<Internal::RemovePtr<T>>();
+                }
             };
-
-            template<class T>
-            using RemovePtr = typename RemovePtrHelper<std::remove_cvref_t<T>>::Type;
 
         public:
             inline explicit Context(IAllocator* pAllocator, IServiceProvider* pScope)
@@ -71,10 +94,51 @@ namespace UN::DI
                 return nullptr;
             }
 
-            template<class T, class TFunc, class... Types>
-            inline T* CreateService([[maybe_unused]] TFunc (*f)(Types...))
+            template<class T, class TArg>
+            inline std::enable_if_t<!std::is_constructible_v<T, TArg>, T*> CreateServiceImpl(TArg)
             {
-                return AllocateObjectEx<T>(m_pAllocator, GetService<RemovePtr<Types>>()...);
+                return AllocateObjectEx<T>(m_pAllocator);
+            }
+
+            template<class T, class TArg>
+            inline std::enable_if_t<std::is_constructible_v<T, TArg>, T*> CreateServiceImpl(TArg a)
+            {
+                return AllocateObjectEx<T>(m_pAllocator, a);
+            }
+
+            template<class T, class TArg1, class TArg2, class... TArgs>
+            inline std::enable_if_t<std::is_constructible_v<T, TArg1, TArg2, TArgs...>, T*> //
+            CreateServiceImpl(TArg1 a1, TArg2 a2, TArgs... args)
+            {
+                return AllocateObjectEx<T>(m_pAllocator, a1, a2, args...);
+            }
+
+            template<class T, class TArg1, class TArg2, class... TArgs>
+            inline std::enable_if_t<!std::is_constructible_v<T, TArg1, TArg2, TArgs...>, T*> //
+            CreateServiceImpl(TArg1, TArg2 a2, TArgs... args)
+            {
+                return CreateServiceImpl<T>(a2, args...);
+            }
+
+            template<class T>
+            inline T* CreateService()
+            {
+                return CreateServiceImpl<T>(ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this),
+                                            ArgResolver(this));
             }
         };
 
@@ -89,7 +153,7 @@ namespace UN::DI
         inline static ServiceActivator CreateForFunc(ActivatorFunc function)
         {
             ServiceActivator result{};
-            result.m_Func = function;
+            result.m_Func = std::move(function);
             return result;
         }
 
@@ -102,7 +166,7 @@ namespace UN::DI
                 IAllocator* pAllocator = SystemAllocator::Get();
                 Context ctx(pAllocator, pScope);
 
-                auto* obj = ctx.CreateService<T>(T::CreateHelper);
+                auto* obj = ctx.CreateService<T>();
                 if (auto err = ctx.GetResolveError())
                 {
                     return Err(err.value());
