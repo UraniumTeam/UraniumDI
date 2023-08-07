@@ -15,10 +15,9 @@ namespace UN::DI
         un_assert_cast<ConfigurationSection*>(m_pRootSection.Get())->SetValue(path, value);
     }
 
-    ConfigurationBuilder ConfigurationBuilder::AddRegistry(IConfigurationRegistry* pRegistry)
+    void ConfigurationBuilder::AddRegistry(IConfigurationRegistry* pRegistry)
     {
         pRegistry->Load(m_Builder);
-        return *this;
     }
 
     IConfiguration* ConfigurationBuilder::Build()

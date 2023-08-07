@@ -24,7 +24,7 @@ namespace UN::DI
         ConfigurationSectionBuilder m_Builder;
 
     public:
-        [[nodiscard]] ConfigurationBuilder AddRegistry(IConfigurationRegistry* pRegistry);
+        void AddRegistry(IConfigurationRegistry* pRegistry);
         [[nodiscard]] IConfiguration* Build();
     };
 } // namespace UN::DI
