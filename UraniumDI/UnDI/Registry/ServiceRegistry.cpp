@@ -4,7 +4,7 @@ namespace UN::DI
 {
     Result<ServiceRegistration*, ErrorCode> ServiceRegistry::GetRegistration(const UUID& uuid)
     {
-        auto iter = std::lower_bound(m_Registrations.begin(), m_Registrations.end(), uuid, [](auto reg, auto id) {
+        auto iter = std::lower_bound(m_Registrations.begin(), m_Registrations.end(), uuid, [](const auto& reg, const auto& id) {
             return reg.ID < id;
         });
 

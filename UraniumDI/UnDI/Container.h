@@ -8,16 +8,16 @@ namespace UN::DI
 {
     class Container : public Object<IContainer>
     {
-        Ptr<LifetimeScope> m_pRootScope;
         Ptr<IServiceRegistry> m_pRegistry;
+        Ptr<LifetimeScope> m_pRootScope;
 
     public:
         UN_RTTI_Class(Container, "53A3EFC1-552E-47F4-9E0C-3DB11932316D");
 
         inline explicit Container(IServiceRegistry* pRegistry)
             : m_pRegistry(pRegistry)
+            , m_pRootScope(AllocateObject<LifetimeScope>(pRegistry))
         {
-            m_pRootScope = AllocateObject<LifetimeScope>(pRegistry);
         }
 
         ~Container() override = default;

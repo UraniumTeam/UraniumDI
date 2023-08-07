@@ -36,6 +36,7 @@ namespace UN::DI
         }
 
         m_ServiceCache.clear();
+        m_IsValid = false;
     }
 
     Result<IObject*, ErrorCode> LifetimeScope::Resolve(const UUID& registrationID)

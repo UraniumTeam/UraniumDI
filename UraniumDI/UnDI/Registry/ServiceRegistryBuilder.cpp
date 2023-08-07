@@ -3,10 +3,10 @@
 
 namespace UN::DI
 {
-    VoidResult<ErrorCode> ServiceRegistryBuilder::Register(const ServiceRegistration& registration)
+    VoidResult<ErrorCode> ServiceRegistryBuilder::Register(ServiceRegistration&& registration)
     {
         // TODO: check for duplicates
-        m_Registrations.Push(registration);
+        m_Registrations.Push(std::move(registration));
         return {};
     }
 

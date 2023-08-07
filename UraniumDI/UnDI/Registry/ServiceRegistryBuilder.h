@@ -59,6 +59,7 @@ namespace UN::DI
             inline RegistryToBuilder ToFunc(ActivatorFunc function)
             {
                 m_pTarget->Activator = ServiceActivator::CreateForFunc(function);
+                m_pTarget->Flags |= ServiceRegistrationFlags::Function;
                 return RegistryToBuilder(m_pTarget);
             }
 
@@ -70,6 +71,8 @@ namespace UN::DI
 
                 m_pTarget->Activator = ServiceActivator::CreateForFunc(factory);
                 m_pTarget->Lifetime  = ServiceLifetime ::Singleton;
+                m_pTarget->Flags |= ServiceRegistrationFlags::Constant;
+                pConst->AddRef();
             }
 
             inline RegistryToBuilder ToSelf()
@@ -87,7 +90,7 @@ namespace UN::DI
     public:
         UN_RTTI_Struct(ServiceRegistryBuilder, "55690DA9-4065-4E60-9438-30016CF4CDEC");
 
-        [[nodiscard]] VoidResult<ErrorCode> Register(const ServiceRegistration& registration);
+        [[nodiscard]] VoidResult<ErrorCode> Register(ServiceRegistration&& registration);
         [[nodiscard]] IServiceRegistry* Build();
 
         template<class TInterface>
@@ -97,6 +100,7 @@ namespace UN::DI
             auto id         = un_typeid<TInterface>();
             target.ID       = id;
             target.Lifetime = ServiceLifetime::Scoped;
+            target.Flags    = ServiceRegistrationFlags::None;
             return Internal::RegistryBindBuilder<TInterface>(&target);
         }
     };
