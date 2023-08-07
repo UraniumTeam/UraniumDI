@@ -20,7 +20,7 @@ UraniumDI is a dependency injection library for modern C++.
     public:
         UN_RTTI_Class(MyLogger, "71963929-6C8A-42F5-B6E9-70F23510C71A");
     
-        inline (MyLogger) {}
+        inline MyLogger() {}
     
         inline void Log(const std::string_view& message) override
         {
