@@ -7,7 +7,7 @@ namespace UN::DI
     class ConfigurationSection : public Object<IConfigurationSection>
     {
         List<IConfigurationSection*> m_Children;
-        std::optional<StringSlice> m_Value;
+        std::optional<String> m_Value;
         String m_Path;
 
         [[nodiscard]] inline ConfigurationSection* GetChildImpl(const StringSlice& name) const
