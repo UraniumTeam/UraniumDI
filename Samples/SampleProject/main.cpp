@@ -105,9 +105,9 @@ int main()
     };
 
     UN::DI::ContainerBuilder builder{};
-    builder.Bind<ILogger>().To<MyLogger>();
-    // Ptr logger = UN::AllocateObject<MyLogger>();
-    // builder.Bind<ILogger>().ToConst(logger.Get());
+    // builder.Bind<ILogger>().To<MyLogger>();
+    ILogger* logger = UN::AllocateObject<MyLogger>();
+    builder.Bind<ILogger>().ToConst(logger);
     builder.Bind<IDatabase>().ToFunc(dbFactory).InSingletonScope();
     // builder.Bind<IDatabase>().To<MyDatabase>().InSingletonScope();
     builder.Bind<ITestService>().To<TestService>().InTransientScope();
@@ -115,6 +115,7 @@ int main()
     Ptr container = builder.Build();
 
     UN_Assert(container->Resolve<UN::DI::IServiceProvider>().Unwrap() == container->GetRootScope(), "");
+    UN_Assert(logger->GetRefCounter()->GetStrongRefCount() == 1, "");
 
     Ptr logger1 = container->Resolve<ILogger>().Unwrap();
     logger1->Log("Test message!");
