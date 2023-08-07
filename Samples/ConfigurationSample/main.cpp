@@ -15,7 +15,10 @@ int main(int argc, char** argv)
 
     Ptr commandLine = AllocateObject<CommandLineConfigurationRegistry>(argc, argv);
 
-    Ptr config = ConfigurationBuilder{}.AddRegistry(registry.Get()).AddRegistry(commandLine.Get()).Build();
+    ConfigurationBuilder builder{};
+    builder.AddRegistry(registry.Get());
+    builder.AddRegistry(commandLine.Get());
+    Ptr config = builder.Build();
 
     // These value can be overridden by command-line arguments
     std::cout << config->Get("test-key").value() << std::endl;
