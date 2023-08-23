@@ -1,9 +1,10 @@
 #include <UnDI/Builder/ContainerBuilder.h>
 #include <UnDI/Lifetime/ILifetimeScope.h>
-#include <format>
 #include <iostream>
 #include <string_view>
+#include <UnTL/Strings/Format.h>
 
+using UN::StringSlice;
 using UN::IObject;
 using UN::Object;
 using UN::Ptr;
@@ -13,7 +14,7 @@ class ILogger : public IObject
 public:
     UN_RTTI_Class(ILogger, "A521C28C-A4CD-491F-B89E-B666B57429BF");
 
-    virtual void Log(const std::string_view& message) = 0;
+    virtual void Log(const StringSlice& message) = 0;
 };
 
 class IDatabase : public IObject
@@ -46,7 +47,7 @@ public:
         std::cout << "Logger deleted!" << std::endl;
     }
 
-    inline void Log(const std::string_view& message) override
+    inline void Log(const StringSlice& message) override
     {
         std::cout << message << std::endl;
     }
@@ -92,7 +93,7 @@ public:
     inline void Run() override
     {
         auto data = m_Database->LoadData();
-        m_Logger->Log(std::format("Loaded data: {}", data));
+        m_Logger->Log(UN::Fmt::Format("Loaded data: {}", data));
     }
 };
 
@@ -135,7 +136,7 @@ int main()
     service->Run();
 
     Ptr db = container->Resolve<IDatabase>().Unwrap();
-    logger1->Log(std::format("Data loaded: {}", db->LoadData()));
+    logger1->Log(UN::Fmt::Format("Data loaded: {}", db->LoadData()));
 
     return 0;
 }

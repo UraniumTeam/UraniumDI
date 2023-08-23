@@ -1,0 +1,2 @@
+#! /bin/bash
+cmake -S . --preset linux-default-sse -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DUN_BUILD_SAMPLES=ON -DUN_BUILD_TESTS=ON

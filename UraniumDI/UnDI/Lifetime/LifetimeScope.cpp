@@ -8,7 +8,7 @@ namespace UN::DI
     Result<ILifetimeScope*, ErrorCode> DI::LifetimeScope::BeginScope()
     {
         UN_Guard(m_IsValid, ErrorCode::InvalidOperation);
-        return AllocateObject<LifetimeScope>(m_pRegistry, this, m_pRootScope);
+        return AllocateObject<LifetimeScope>(m_pRegistry, m_pRootScope);
     }
 
     LifetimeScope::~LifetimeScope()

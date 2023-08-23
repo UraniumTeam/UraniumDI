@@ -5,7 +5,7 @@ namespace UN::DI
 {
     CommandLineConfigurationRegistry::CommandLineConfigurationRegistry(int argc, char** argv)
     {
-        for (USize i = 1; i < argc; ++i)
+        for (int i = 1; i < argc; ++i)
         {
             m_Data.Push(argv[i]);
         }
